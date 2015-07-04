@@ -11,18 +11,7 @@
     <AutoCompleteTextView
         android:id="@android:id/edit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    
-    <!--<TextView-->
-        <!--android:id="@android:id/text1"-->
-        <!--android:text="Results here"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
-
-    <!--<Button-->
-        <!--android:id="@android:id/button1"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Find" />-->
+        android:layout_height="wrap_content"
+        android:completionThreshold="2" />
 
 </LinearLayout>

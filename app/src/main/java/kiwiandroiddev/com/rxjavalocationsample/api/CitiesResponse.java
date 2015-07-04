@@ -1,4 +1,4 @@
-package kiwiandroiddev.com.rxjavalocationsample;
+package kiwiandroiddev.com.rxjavalocationsample.api;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package kiwiandroiddev.com.rxjavalocationsample;
+package kiwiandroiddev.com.rxjavalocationsample.adapter;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
@@ -7,15 +7,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import org.apache.commons.collections4.ListUtils;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import kiwiandroiddev.com.rxjavalocationsample.api.CitiesResponse;
+import kiwiandroiddev.com.rxjavalocationsample.api.City;
+import kiwiandroiddev.com.rxjavalocationsample.api.OpenWeatherMapService;
 import rx.Observable;
-import rx.Subscriber;
-import timber.log.Timber;
 
 /**
  * Filterable adapter for populating suggestions of city names into an AutoCompleteTextView
@@ -55,35 +53,16 @@ public class AutoCompleteCityAdapter extends ArrayAdapter<City> implements Filte
 
                     // performFiltering is already performed on a worker thread
                     // so we don't need to subscribeOn a background thread explicitly
-                    observable.subscribe(new Subscriber<CitiesResponse>() {
-                                @Override
-                                public void onCompleted() {
-                                    Timber.d("onCompleted");
-                                }
+                    CitiesResponse citiesResponse = observable.toBlocking().single();
+                    mCities = citiesResponse.list != null ?
+                            citiesResponse.list :
+                            new ArrayList<City>();
 
-                                @Override
-                                public void onError(Throwable e) {
-                                    Timber.d("onError e = " + e);
-                                }
-
-                                @Override
-                                public void onNext(CitiesResponse citiesResponse) {
-                                    Timber.d("onNext citiesResponse = " + citiesResponse);
-                                    mCities = citiesResponse.list != null ?
-                                            citiesResponse.list :
-                                            new ArrayList<City>();
-                                }
-                            });
-
-                    // Now assign the values and count to the FilterResults object
-                    Timber.d("assigning to filterresults");
                     filterResults.values = mCities;
                     filterResults.count = mCities.size();
                 }
                 return filterResults;
             }
-
-
 
             @Override
             protected void publishResults(CharSequence partialCityName, FilterResults results) {
